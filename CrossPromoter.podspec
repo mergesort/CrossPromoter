@@ -15,4 +15,5 @@ Pod::Spec.new do |spec|
 
 #Depdencies
   spec.dependency 'PureLayout'
+  spec.dependency 'UIViewController+StoreKit'
 end
