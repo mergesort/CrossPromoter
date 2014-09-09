@@ -1,0 +1,16 @@
+PODS:
+  - NSString+Validation (1.0.2)
+  - PureLayout (1.1.0)
+  - UIViewController+StoreKit (1.0.3):
+    - NSString+Validation
+
+DEPENDENCIES:
+  - PureLayout
+  - UIViewController+StoreKit
+
+SPEC CHECKSUMS:
+  NSString+Validation: fc7fae4cadfc133db6a2368beeb5505519df2d0c
+  PureLayout: c8960fa0f3b40d849d5e177d699d0148faa63b63
+  UIViewController+StoreKit: e9068f7f1a778ffe8b4c6740868c44c65f1f75fb
+
+COCOAPODS: 0.33.1
