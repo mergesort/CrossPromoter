@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "35A2EB4642DF4C9F9D584518"
+               BlueprintIdentifier = "DB61F9029FCC4547BC25E696"
                BuildableName = "libPods-UIViewController+StoreKit.a"
                BlueprintName = "Pods-UIViewController+StoreKit"
                ReferencedContainer = "container:Pods.xcodeproj">

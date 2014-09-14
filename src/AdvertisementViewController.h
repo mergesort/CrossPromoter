@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger, DisplayMode) {
 @interface AdvertisementViewController : UIViewController
 
 @property (readonly) UIButton* downloadButton;
+@property (readonly) UIButton* shareButton;
 @property (readonly) UIButton* cancelButton;
 @property (nonatomic) UIColor* adBackgroundColor;
 

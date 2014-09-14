@@ -1,0 +1,1 @@
+PODS_CROSSPROMOTER_OTHER_LDFLAGS = -framework Foundation

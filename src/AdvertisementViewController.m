@@ -33,6 +33,7 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 @property UILabel* titleLabel;
 @property UIButton* appButton;
 @property (readwrite) UIButton* downloadButton;
+@property (readwrite) UIButton *shareButton;
 
 @property BOOL viewHasAppeared;
 
@@ -102,7 +103,7 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 
     _appButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [adView addSubview:_appButton];
-    _appButton.layer.cornerRadius = (self.displayMode == DisplayModeInterstitial) ? 34.0f : (self.displayMode == DisplayModeBanner) ? 10.0f : 0.0f;
+    _appButton.layer.cornerRadius = (self.displayMode == DisplayModeInterstitial) ? 27.0f : (self.displayMode == DisplayModeBanner) ? 10.0f : 0.0f;
     _appButton.clipsToBounds = YES;
     [_appButton addTarget:self action:@selector(tappedAppButton) forControlEvents:UIControlEventTouchUpInside];
     _appButton.userInteractionEnabled = YES;
@@ -110,13 +111,22 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 
     _downloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [adView addSubview:_downloadButton];
-    [_downloadButton setTitle:NSLocalizedString(@"Check it out", nil) forState:UIControlStateNormal];
-    _downloadButton.backgroundColor = [UIColor lightGrayColor];
+    [_downloadButton setTitle:NSLocalizedString(@"Free", nil) forState:UIControlStateNormal];
+    _downloadButton.backgroundColor = [UIColor colorWithRed:(39.0f/255.0f) green:(174.0f/255.0f) blue:(96.0f/255.0f) alpha:1.0f];
     _downloadButton.layer.cornerRadius = 4.0f;
     _downloadButton.clipsToBounds = YES;
     _downloadButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Book" size:18.0f];
     [_downloadButton addTarget:self action:@selector(tappedDownloadButton) forControlEvents:UIControlEventTouchUpInside];
 
+    _shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [adView addSubview:_shareButton];
+    [_shareButton setTitle:NSLocalizedString(@"Share", nil) forState:UIControlStateNormal];
+    _shareButton.backgroundColor = [UIColor colorWithRed:(52.0f/255.0f) green:(152.0f/255.0f) blue:(219.0f/255.0f) alpha:1.0f];
+    _shareButton.layer.cornerRadius = 4.0f;
+    _shareButton.clipsToBounds = YES;
+    _shareButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Book" size:18.0f];
+    [_shareButton addTarget:self action:@selector(tappedShareButton) forControlEvents:UIControlEventTouchUpInside];
+    
     _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [adView addSubview:_cancelButton];
     [_cancelButton setTitle:NSLocalizedString(@"Later", nil) forState:UIControlStateNormal];
@@ -142,21 +152,25 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
             [self.titleLabel autoSetDimension:ALDimensionWidth toSize:300.0f];
             [self.titleLabel autoSetDimension:ALDimensionHeight toSize:110.0f];
 
-            CGFloat const buttonSide = 150.0f;
+            CGFloat const buttonSide = 95.0f;
             [self.appButton
                 autoSetDimensionsToSize:CGSizeMake(buttonSide, buttonSide)];
             [self.appButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
             [self.appButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
             CGFloat const actionButtonHeight = 44.0f;
-
+            CGFloat const bottomButtonInset = 15.0f;
+            
             [self.downloadButton autoSetDimension:ALDimensionHeight toSize:actionButtonHeight];
-            [self.downloadButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:15.0f];
+            [self.downloadButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:bottomButtonInset];
 
+            [self.shareButton autoSetDimension:ALDimensionHeight toSize:actionButtonHeight];
+            [self.shareButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:bottomButtonInset];
+            
             [self.cancelButton autoSetDimension:ALDimensionHeight toSize:actionButtonHeight];
-            [self.cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:15.0f];
+            [self.cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:bottomButtonInset];
 
-            NSArray* actionButtons = @[ self.downloadButton, self.cancelButton ];
+            NSArray* actionButtons = @[ self.downloadButton, self.shareButton, self.cancelButton ];
             [actionButtons autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:5.0f insetSpacing:YES alignment:NSLayoutFormatAlignAllTop];
         } else if (self.displayMode == DisplayModeBanner) {
             [self.bannerView autoSetDimension:ALDimensionHeight toSize:AdvertisementViewControllerBannerHeight];
@@ -194,10 +208,6 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
             [self.view removeFromSuperview];
         }
     }];
-
-    if (parent != nil) {
-    } else {
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -223,6 +233,12 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 - (void)tappedDownloadButton
 {
     [self openApp];
+}
+
+- (void)tappedShareButton
+{
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[ [AdvertisementViewController appURLForIdentifier:self.storeIdentifier] ] applicationActivities:nil];
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 - (void)tappedBanner

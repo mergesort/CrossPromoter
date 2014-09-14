@@ -22,5 +22,5 @@
 #define COCOAPODS_POD_AVAILABLE_UIViewController_StoreKit
 #define COCOAPODS_VERSION_MAJOR_UIViewController_StoreKit 1
 #define COCOAPODS_VERSION_MINOR_UIViewController_StoreKit 0
-#define COCOAPODS_VERSION_PATCH_UIViewController_StoreKit 3
+#define COCOAPODS_VERSION_PATCH_UIViewController_StoreKit 5
 

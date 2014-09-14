@@ -54,16 +54,20 @@
 
 - (IBAction)tappedInterstitial:(id)sender
 {
+    if (self.showingBanner) {
+        self.showingBanner = NO;
+        [_advertisementController dismissAdViewControllerAnimated:YES completion:nil];
+        [_bannerButton setTitle:NSLocalizedString(@"Show banner", nil) forState:UIControlStateNormal];
+    }
+
     _advertisementController = [[AdvertisementViewController alloc] initWithFeaturedApp:self.featuredApp displayMode:DisplayModeInterstitial];
+    [_advertisementController.downloadButton setTitle:@"Free App" forState:UIControlStateNormal];
     [self presentAdViewController:_advertisementController animated:YES completion:nil];
 }
 
 - (IBAction)tappedBanner:(id)sender
 {
     if (self.showingBanner) {
-        if (_advertisementController) {
-            [_advertisementController dismissAdViewControllerAnimated:YES completion:nil];
-        }
         [_bannerButton setTitle:NSLocalizedString(@"Show banner", nil) forState:UIControlStateNormal];
         [_advertisementController dismissAdViewControllerAnimated:YES completion:nil];
     } else {
