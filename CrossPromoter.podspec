@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 #Information
   spec.name         = 'CrossPromoter'
-  spec.version      = '1.0.1'
+  spec.version      = '1.0.2'
   spec.license      = { :type => 'MIT' }
   spec.homepage     = 'https://github.com/mergesort/CrossPromoter'
   spec.author       =  { 'Joe Fabisevich' => 'github@fabisevi.ch' }
