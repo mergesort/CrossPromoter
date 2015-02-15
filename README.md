@@ -42,7 +42,7 @@ And voila!
 
 <center><img src="/images/Interstitial.png" width="300px" height="533px"></center>
 
-The interstitial gives the user the option to install the app without leaving the current app.
+Both the banner and the interstitial give the user the option to install the app without leaving the current app.
 
 <center><img src="/images/App%20Store.png" width="300px" height="533px"></center>
 
