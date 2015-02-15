@@ -30,7 +30,7 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 @property (nonatomic) NSString* appName;
 @property (nonatomic) UIImage* appIcon;
 
-@property UILabel* titleLabel;
+@property (readwrite) UILabel* titleLabel;
 @property UIButton* appButton;
 @property (readwrite) UIButton* downloadButton;
 @property (readwrite) UIButton *shareButton;
@@ -52,7 +52,6 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
         _storeIdentifier = featuredApp.appIdentifier;
         _appName = featuredApp.appName;
         _appIcon = featuredApp.appIcon;
-
         _displayMode = mode;
 
         PassthroughView* view = [[PassthroughView alloc] initWithFrame:self.view.frame];
@@ -94,7 +93,7 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 
     _titleLabel = [[UILabel alloc] init];
     [adView addSubview:_titleLabel];
-    _titleLabel.numberOfLines = (self.displayMode == DisplayModeInterstitial) ? 2 : (self.displayMode == DisplayModeBanner) ? 1 : 0;
+    _titleLabel.numberOfLines = (self.displayMode == DisplayModeInterstitial) ? 0 : (self.displayMode == DisplayModeBanner) ? 1 : 0;
     _titleLabel.textAlignment = (self.displayMode == DisplayModeInterstitial) ? NSTextAlignmentCenter : (self.displayMode == DisplayModeBanner) ? NSTextAlignmentLeft : NSTextAlignmentLeft;
     _titleLabel.text = text;
     CGFloat fontSize = (self.displayMode == DisplayModeInterstitial) ? 36.0f : (self.displayMode == DisplayModeBanner) ? 18.0f : 0.0f;
@@ -109,37 +108,40 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
     _appButton.userInteractionEnabled = YES;
     [_appButton setBackgroundImage:self.appIcon forState:UIControlStateNormal];
 
-    _downloadButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _downloadButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [adView addSubview:_downloadButton];
     [_downloadButton setTitle:NSLocalizedString(@"Free", nil) forState:UIControlStateNormal];
     _downloadButton.backgroundColor = [UIColor colorWithRed:(39.0f/255.0f) green:(174.0f/255.0f) blue:(96.0f/255.0f) alpha:1.0f];
     _downloadButton.layer.cornerRadius = 4.0f;
     _downloadButton.clipsToBounds = YES;
+    [_downloadButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _downloadButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Book" size:18.0f];
     [_downloadButton addTarget:self action:@selector(tappedDownloadButton) forControlEvents:UIControlEventTouchUpInside];
 
-    _shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [adView addSubview:_shareButton];
     [_shareButton setTitle:NSLocalizedString(@"Share", nil) forState:UIControlStateNormal];
     _shareButton.backgroundColor = [UIColor colorWithRed:(52.0f/255.0f) green:(152.0f/255.0f) blue:(219.0f/255.0f) alpha:1.0f];
     _shareButton.layer.cornerRadius = 4.0f;
     _shareButton.clipsToBounds = YES;
+    [_shareButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _shareButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Book" size:18.0f];
     [_shareButton addTarget:self action:@selector(tappedShareButton) forControlEvents:UIControlEventTouchUpInside];
     
-    _cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [adView addSubview:_cancelButton];
     [_cancelButton setTitle:NSLocalizedString(@"Later", nil) forState:UIControlStateNormal];
     _cancelButton.backgroundColor = [UIColor darkGrayColor];
+    [_cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     _cancelButton.layer.cornerRadius = 4.0f;
     _cancelButton.clipsToBounds = YES;
     _cancelButton.titleLabel.font = [UIFont fontWithName:@"Avenir-Book" size:18.0f];
     [_cancelButton addTarget:self action:@selector(tappedCancelButton) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.view setNeedsUpdateConstraints];
+    [self setupConstraints];
 }
 
-- (void)updateViewConstraints
+- (void)setupConstraints
 {
     if (!self.viewHasAppeared) {
         self.viewHasAppeared = YES;
@@ -149,29 +151,34 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 
             [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:20.0f];
             [self.titleLabel autoAlignAxisToSuperviewAxis:ALAxisVertical];
-            [self.titleLabel autoSetDimension:ALDimensionWidth toSize:300.0f];
-            [self.titleLabel autoSetDimension:ALDimensionHeight toSize:110.0f];
+            [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeLeft withInset:10.0f];
+            [self.titleLabel autoPinEdgeToSuperviewEdge:ALEdgeRight withInset:10.0f];
+            [self.titleLabel autoSetDimension:ALDimensionHeight toSize:150.0f];
 
             CGFloat const buttonSide = 95.0f;
-            [self.appButton
-                autoSetDimensionsToSize:CGSizeMake(buttonSide, buttonSide)];
+            [self.appButton autoSetDimensionsToSize:CGSizeMake(buttonSide, buttonSide)];
             [self.appButton autoAlignAxisToSuperviewAxis:ALAxisVertical];
             [self.appButton autoAlignAxisToSuperviewAxis:ALAxisHorizontal];
 
             CGFloat const actionButtonHeight = 44.0f;
-            CGFloat const bottomButtonInset = 15.0f;
-            
+            CGFloat const bottomButtonInset = 5.0f;
+
+            NSDictionary* views = @{
+                                    @"downloadButton" : self.downloadButton,
+                                    @"shareButton" : self.shareButton,
+                                    @"cancelButton" : self.cancelButton,
+                                    };
+
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-padding-[downloadButton]-padding-[shareButton(==downloadButton)]-padding-[cancelButton(==downloadButton)]-padding-|" options:NSLayoutFormatAlignAllTop|NSLayoutFormatAlignAllBottom metrics:@{@"padding" : @(5.0f)} views:views]];
+
             [self.downloadButton autoSetDimension:ALDimensionHeight toSize:actionButtonHeight];
             [self.downloadButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:bottomButtonInset];
 
             [self.shareButton autoSetDimension:ALDimensionHeight toSize:actionButtonHeight];
             [self.shareButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:bottomButtonInset];
-            
+
             [self.cancelButton autoSetDimension:ALDimensionHeight toSize:actionButtonHeight];
             [self.cancelButton autoPinEdgeToSuperviewEdge:ALEdgeBottom withInset:bottomButtonInset];
-
-            NSArray* actionButtons = @[ self.downloadButton, self.shareButton, self.cancelButton ];
-            [actionButtons autoDistributeViewsAlongAxis:ALAxisHorizontal withFixedSpacing:5.0f insetSpacing:YES alignment:NSLayoutFormatAlignAllTop];
         } else if (self.displayMode == DisplayModeBanner) {
             [self.bannerView autoSetDimension:ALDimensionHeight toSize:AdvertisementViewControllerBannerHeight];
             [self.bannerView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero excludingEdge:ALEdgeTop];
@@ -186,7 +193,7 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
         }
     }
 
-    [super updateViewConstraints];
+    [self.view layoutIfNeeded];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +223,7 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 - (void)setAdBackgroundColor:(UIColor*)adBackgroundColor
 {
     if (self.displayMode == DisplayModeInterstitial) {
-        self.view.backgroundColor = adBackgroundColor;
+        _interstitialView.backgroundColor = adBackgroundColor;
     } else if (self.displayMode == DisplayModeBanner) {
         _bannerView.backgroundColor = adBackgroundColor;
     }
@@ -253,7 +260,24 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 
 - (void)openApp
 {
-    [self presentStoreKitItemWithIdentifier:self.storeIdentifier];
+    __block NSString *originalTitle = nil;
+    void (^setTitle) (NSString *) = ^(NSString *title) {
+        if (self.displayMode == DisplayModeInterstitial)
+        {
+            originalTitle = [self.downloadButton titleForState:UIControlStateNormal];
+            [self.downloadButton setTitle:title forState:UIControlStateNormal];
+        }
+        else
+        {
+            originalTitle = self.titleLabel.text;
+            self.titleLabel.text = title;
+        }
+    };
+
+    setTitle(NSLocalizedString(@"Opening...", nil));
+    [self presentStoreKitItemWithIdentifier:self.storeIdentifier completion:^{
+        setTitle(originalTitle);
+    }];
 }
 
 - (void)dismissAdViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion

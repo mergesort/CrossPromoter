@@ -18,7 +18,7 @@
         totalPercentage += [number floatValue];
     }
     
-    NSAssert(abs(1.0-totalPercentage) < 0.00001, @"Your total odds must be equivalent to 100%%");
+    NSAssert(totalPercentage == 1.0f, @"Your total odds must be equivalent to 100%%");
     
     NSMutableArray* mutableAppIDs = [NSMutableArray array];
     
