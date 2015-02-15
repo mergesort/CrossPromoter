@@ -17,9 +17,10 @@
     for (NSNumber* number in percentages) {
         totalPercentage += [number floatValue];
     }
-    
-    NSAssert(totalPercentage == 1.0f, @"Your total odds must be equivalent to 100%%");
-    
+
+    // Account for floating point math, surely this isn't the best way...
+    NSAssert(abs(totalPercentage-1.0f) <= 0.0001, @"Your total odds must be equivalent to 100%%");
+
     NSMutableArray* mutableAppIDs = [NSMutableArray array];
     
     for (int i = 0; i < percentages.count; i++) {
