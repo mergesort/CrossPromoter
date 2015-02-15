@@ -26,7 +26,7 @@ bannerAdViewController.adBackgroundColor = [UIColor colorWithRed:52.0f/255.0f gr
 
 And your end result should look like this!
 
-![Banner](/examples/App%20Store.png)
+<img src="/images/Banner.png" width="300px" height="533px">
 
 Now let's say you wanted to display an interstitial, maybe once every few times the user uses the app as to not overwhelm them. All you'd have to do is this instead.
 
@@ -40,15 +40,15 @@ interstitialAdViewController.adBackgroundColor = [UIColor colorWithRed:52.0f/255
 
 And voila!
 
-![Interstitial](/examples/App%20Store.png)
+<img src="/images/Interstitial.png" width="300px" height="533px">
 
 The interstitial gives the user the option to install the app without leaving the current app.
 
-![Install](/examples/App%20Store.png)
+<img src="/images/App%20Store.png" width="300px" height="533px">
 
 And alternatively to share it.
 
-![Share](/examples/App%20Store.png)
+<img src="/images/Share.png" width="300px" height="533px">
 
 
 You can style the ads however you like, but you don't need to do anything more than provide an App object as we did above.
