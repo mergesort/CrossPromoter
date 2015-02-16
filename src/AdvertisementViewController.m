@@ -280,6 +280,8 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
     self.loadedStoreKitItemBlock = ^{
         setTitle(originalTitle);
     };
+
+    [self presentStoreKitItemWithIdentifier:self.storeIdentifier];
 }
 
 - (void)dismissAdViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
