@@ -26,13 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../CrossPromoter/src/AdvertisementViewController.m"
-            timestampString = "432402911.856136"
+            timestampString = "445742986.264294"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
-            landmarkName = "-presentAdViewController:animated:completion:"
-            landmarkType = "5">
+            startingLineNumber = "295"
+            endingLineNumber = "295">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

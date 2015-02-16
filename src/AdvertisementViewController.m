@@ -260,24 +260,26 @@ CGFloat const AdvertisementViewControllerBannerHeight = 50.0f;
 
 - (void)openApp
 {
-    __block NSString *originalTitle = nil;
+    NSString * const originalTitle = (self.displayMode == DisplayModeInterstitial) ? [self.downloadButton titleForState:UIControlStateNormal] : self.titleLabel.text;
+
     void (^setTitle) (NSString *) = ^(NSString *title) {
         if (self.displayMode == DisplayModeInterstitial)
         {
-            originalTitle = [self.downloadButton titleForState:UIControlStateNormal];
             [self.downloadButton setTitle:title forState:UIControlStateNormal];
         }
         else
         {
-            originalTitle = self.titleLabel.text;
             self.titleLabel.text = title;
         }
     };
 
-    setTitle(NSLocalizedString(@"Opening...", nil));
-    [self presentStoreKitItemWithIdentifier:self.storeIdentifier completion:^{
+    self.loadingStoreKitItemBlock = ^{
+        setTitle(NSLocalizedString(@"Opening...", nil));
+    };
+
+    self.loadedStoreKitItemBlock = ^{
         setTitle(originalTitle);
-    }];
+    };
 }
 
 - (void)dismissAdViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
